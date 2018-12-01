@@ -37,6 +37,8 @@ public class CatalogueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalogue);
 
+        overridePendingTransition(R.anim.translate_left, R.anim.translate_right);
+
         user = getIntent().getExtras().getString("user","");
 
         //Toast.makeText(getApplicationContext(), user, Toast.LENGTH_SHORT).show();

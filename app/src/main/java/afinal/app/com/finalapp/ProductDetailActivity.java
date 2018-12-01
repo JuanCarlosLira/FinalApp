@@ -61,6 +61,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        overridePendingTransition(R.anim.translate_left, R.anim.translate_right);
+
         user = getIntent().getExtras().getString("user","");
         id = getIntent().getExtras().getString("id","1");
 
