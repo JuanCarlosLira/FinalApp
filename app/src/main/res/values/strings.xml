@@ -10,5 +10,14 @@
     <string name="edit">Edit</string>
     <string name="add">Add Item</string>
     <string name="delete">Delete</string>
+    <string name="update">Update</string>
     <string name="x">X</string>
+
+    <string name="id">ID:</string>
+    <string name="model">Model:</string>
+    <string name="description">Description</string>
+    <string name="name">Name:</string>
+    <string name="price">Price:</string>
+
+    <string name="prodDetailTitle">Update Product</string>
 </resources>

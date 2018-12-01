@@ -29,7 +29,8 @@
         </activity>
         <activity android:name=".PatternActivity" />
         <activity android:name=".PatternActivity2" />
-        <activity android:name=".CatalogueActivity"></activity>
+        <activity android:name=".CatalogueActivity" />
+        <activity android:name=".ProductDetailActivity"></activity>
     </application>
 
 </manifest>

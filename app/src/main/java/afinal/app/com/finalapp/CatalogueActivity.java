@@ -1,6 +1,7 @@
 package afinal.app.com.finalapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,7 @@ import javax.net.ssl.SSLSession;
 public class CatalogueActivity extends AppCompatActivity {
 
     String user;
-    String server = "192.168.1.65";
+    String server = "192.168.1.68";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,16 @@ public class CatalogueActivity extends AppCompatActivity {
         Log.d("REMOTE DATABASE", "Deleted - "+id);
 
         loadWebFile();
+    }
+
+    public void editClicked(View view){
+        Intent newActivity = new Intent( this, ProductDetailActivity.class);
+
+        String value = ""+((View)view.getParent()).getId();
+
+        newActivity.putExtra("id", value);
+        newActivity.putExtra("user", user);
+        startActivity(newActivity);
     }
 
     void setProgressPercent(Integer progress){
