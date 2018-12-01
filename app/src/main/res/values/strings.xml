@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FinalApp</string>
+
+    <string name="save">Save</string>
+    <string name="login">Log In</string>
+    <string name="register">Register</string>
+    <string name="accept">Accept</string>
+    <string name="username">Username</string>
+    <string name="logo">Logo</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add Item</string>
+    <string name="delete">Delete</string>
+    <string name="x">X</string>
 </resources>

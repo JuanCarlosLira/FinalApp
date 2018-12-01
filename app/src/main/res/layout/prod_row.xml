@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/prodName"
+        android:layout_width="153dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/prodModel"
+        android:layout_width="93dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/editBut"
+        android:layout_width="71dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="editClicked"
+        android:text="@string/edit" />
+
+    <Button
+        android:id="@+id/deleteBut"
+        android:layout_width="26dp"
+        android:layout_height="34dp"
+        android:layout_weight="1"
+        android:background="@android:color/holo_red_dark"
+        android:onClick="removeClicked"
+        android:text="@string/x" />
+
+</LinearLayout>
