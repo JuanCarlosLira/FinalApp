@@ -92,6 +92,12 @@ public class CatalogueActivity extends AppCompatActivity {
         startActivity(newActivity);
     }
 
+    public void addItemClicked(View view){
+        Intent newActivity = new Intent( this, NewProductActivity.class);
+        newActivity.putExtra("user", user);
+        startActivity(newActivity);
+    }
+
     void setProgressPercent(Integer progress){
 
         Log.d("PROGRESS " , "We are on  " + progress + " of task" );

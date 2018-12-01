@@ -1,8 +1,17 @@
 package afinal.app.com.finalapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.StrictMode;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,11 +42,19 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import static java.lang.Math.abs;
+
 public class ProductDetailActivity extends AppCompatActivity {
 
     String id;
     String user;
     String server = "192.168.1.68";
+
+    private SensorManager sensorManager;
+    private Sensor gyroSensor;
+    private SensorEventListener gyroEventListener;
+
+    private Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +63,30 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         user = getIntent().getExtras().getString("user","");
         id = getIntent().getExtras().getString("id","1");
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        gyroSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (gyroSensor == null){
+            Toast.makeText(this, "This Device Has No Gyroscope !", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        gyroEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.values[2] > 2.0f) {
+                    goLeft();
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
 
         Log.d("Click", ""+id);
 
@@ -58,6 +100,35 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         //inId.setText(""+id);
         //inId.setText(getIntent().getStringExtra(CatalogueActivity.MESSAGE_ID));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(gyroEventListener, gyroSensor, SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(gyroEventListener);
+    }
+
+    private void vib() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(100);
+        }
+    }
+
+
+    private void goLeft() {
+        Intent myIntent = new Intent(this, CatalogueActivity.class);
+        vib();
+        myIntent.putExtra("user", user);
+        startActivity(myIntent);
     }
 
     public void updateClicked(View view){

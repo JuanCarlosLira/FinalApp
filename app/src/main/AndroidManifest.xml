@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="afinal.app.com.finalapp">
 
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -30,7 +31,8 @@
         <activity android:name=".PatternActivity" />
         <activity android:name=".PatternActivity2" />
         <activity android:name=".CatalogueActivity" />
-        <activity android:name=".ProductDetailActivity"></activity>
+        <activity android:name=".ProductDetailActivity" />
+        <activity android:name=".NewProductActivity"></activity>
     </application>
 
 </manifest>
