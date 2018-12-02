@@ -1,7 +1,13 @@
 package afinal.app.com.finalapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.StrictMode;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class NewProductActivity extends AppCompatActivity {
+
+    public static String CHANNEL_ID = "Notification Chanel #1";
 
     String user;
     String server = "192.168.1.68";
@@ -81,9 +89,32 @@ public class NewProductActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        doNotification("New Item", aProd.getName(), aProd.getName()+": "+aProd.getDescription());
+
         // Return to the catalogue activity
         Intent newActivity = new Intent( this, CatalogueActivity.class);
         newActivity.putExtra("user", user);
         startActivity(newActivity);
+    }
+
+    void doNotification(String title, String text, String bigText){
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(bigText))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(1000, mBuilder.build());
+
     }
 }

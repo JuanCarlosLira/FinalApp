@@ -1,9 +1,15 @@
 package afinal.app.com.finalapp;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.StrictMode;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +35,8 @@ import javax.net.ssl.SSLSession;
 
 public class CatalogueActivity extends AppCompatActivity {
 
+    public static String CHANNEL_ID = "Notification Chanel #1";
+
     String user;
     String server = "192.168.1.68";
 
@@ -40,6 +48,8 @@ public class CatalogueActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.translate_left, R.anim.translate_right);
 
         user = getIntent().getExtras().getString("user","");
+
+        createNotificationChannel();
 
         //Toast.makeText(getApplicationContext(), user, Toast.LENGTH_SHORT).show();
         TextView welcomeText = findViewById(R.id.welcomeText);
@@ -78,6 +88,8 @@ public class CatalogueActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        doNotification("Deleted Item", "Item No: "+id,"Item No: "+id);
 
         Log.d("REMOTE DATABASE", "Deleted - "+id);
 
@@ -229,6 +241,43 @@ public class CatalogueActivity extends AppCompatActivity {
             }
             return messagebuffer.toString();
         }
+
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = CHANNEL_ID;
+            String description = "My Channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    void doNotification(String title, String text, String bigText){
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(bigText))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(1000, mBuilder.build());
 
     }
 }
